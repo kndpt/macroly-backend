@@ -1,7 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { extractUnitFromName, filterEmptyConstituant } from 'src/utils/utils';
+import {
+  extractUnitFromName,
+  filterEmptyComposition,
+  cleanConstituantName,
+} from 'src/utils/utils';
 import { AlimentWithConstituantsDto } from 'src/type/dto/aliment.dto';
 import { Aliment } from 'src/type/entity/aliment.entity';
 import { ConstituantDto } from 'src/type/dto/constituant.dto';
@@ -30,21 +34,23 @@ export class AlimentService {
 
     // Mapper les données vers le DTO en filtrant les valeurs null
     const constituants: ConstituantDto[] = alim.compositions
-      .map((composition) => ({
-        name: composition.constituant.const_nom_fr,
-        value: composition.teneur,
-        min: composition.min,
-        max: composition.max,
-        unit: extractUnitFromName(composition.constituant.const_nom_fr),
-        confidence: composition.code_confiance,
-        code: composition.constituant.const_code,
-        source: composition.source_code,
-      }))
-      .filter(filterEmptyConstituant);
+      // On filtre les compositions vides
+      .filter(filterEmptyComposition)
+      .map((composition) => {
+        const name = cleanConstituantName(composition.constituant.const_nom_fr);
+        return {
+          name: name,
+          value: composition.teneur,
+          unit: extractUnitFromName(composition.constituant.const_nom_fr),
+          confidence: composition.code_confiance,
+          code: composition.constituant.const_code,
+          source: composition.source_code,
+        };
+      });
 
     return {
       code: alim.alim_code,
-      name: alim.alim_nom_fr,
+      name: alim.alim_nom_fr.trim(),
       constituants,
     };
   }
