@@ -16,6 +16,10 @@ export class ConstituantDto {
    */
   value?: number;
   /**
+   * Comparateur de la teneur (lower, equal)
+   */
+  comparator: string;
+  /**
    * Valeur minimale de l'aliment, si existante.
    */
   min?: number;

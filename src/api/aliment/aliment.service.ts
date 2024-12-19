@@ -45,6 +45,7 @@ export class AlimentService {
           confidence: composition.code_confiance,
           code: composition.constituant.const_code,
           source: composition.source_code,
+          comparator: composition.comparator,
         };
       });
 
@@ -114,6 +115,7 @@ export class AlimentService {
             value: c.teneur || null,
             min: c.min || null,
             max: c.max || null,
+            comparator: c.comparator || null,
             unit: extractUnitFromName(c.constituant?.const_nom_fr || ''),
             confidence: c.code_confiance || 'N/A',
             source: c.source_code || 'N/A',

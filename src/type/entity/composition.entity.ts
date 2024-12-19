@@ -24,6 +24,9 @@ export class Composition {
   @Column({ type: 'float', nullable: true })
   teneur: number;
 
+  @Column()
+  comparator: string;
+
   @Column({ type: 'float', nullable: true })
   min: number;
 

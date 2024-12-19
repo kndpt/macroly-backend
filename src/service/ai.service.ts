@@ -50,7 +50,8 @@ export class AIService {
       /(\d*[.,]?\d+)\s*(?:mg|g|kcal|µg)\/100\s*g/i, // Format complet avec unité/100g
       /:\s*environ\s*(\d*[.,]?\d+)\s*(?:à|-)\s*(\d*[.,]?\d+)\s*(?:mg|g|kcal|µg)\b/i, // Format avec fourchette (à ou -)
       /:\s*environ\s*(\d*[.,]?\d+)\s*(?:mg|g|kcal|µg)\b/i, // Format avec "environ"
-      /:\s*(\d*[.,]?\d+)\s*(?:mg|g|kcal|µg)\b/i, // Format avec deux points et unité
+      /:\s*(\d*[.,]?\d+)\s*(?:mg|g|kcal|µg)(?:\.|$)/i, // Format avec deux points et unité
+      /est à environ\s*(\d*[.,]?\d+)\s*(?:mg|g|kcal|µg)\b/i, // Format sans deux points
       /:\s*(\d*[.,]?\d+)/, // Dernier recours: nombre après ":"
     ];
 
